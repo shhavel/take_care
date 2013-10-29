@@ -51,6 +51,11 @@ describe TakeCare::Reliable do
         Human.class_eval { private; def take_care_hard_work; end }
         should_not be_respond_to :take_care_hard_work
       end
+
+      it "is true if exists private method with such name and we are checking for private methods as well" do
+        Human.class_eval { private; def take_care_hard_work; end }
+        should be_respond_to :take_care_hard_work, true
+      end
     end
   end
 end
