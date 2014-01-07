@@ -44,6 +44,28 @@ human.take_care_of_hard_work 'heavy box', 'second heavy box'
 
 ```
 
+There is also support for class methods for all kind of classes (not only ActiveRecord::Base).
+
+```rb
+class Human
+  include TakeCare::Reliable
+
+  def self.do_stuff(s1, s2)
+    # Code that needs to be executed in background
+  end
+end
+
+Human.take_care :do_stuff, 'arg1', 'arg2' # This goes to sidekiq
+
+Human.take_care_of :do_stuff, 'arg1', 'arg2' # Same using alias
+
+# Same using dynamic methods (method is defined after first call)
+Human.take_care_do_stuff 'arg1', 'arg2'
+# Or
+Human.take_care_of_do_stuff 'arg1', 'arg2'
+
+```
+
 ## Contributing
 
 1. Fork it
