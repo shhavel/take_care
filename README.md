@@ -1,5 +1,7 @@
 # TakeCare
 
+[![Gem Version](https://badge.fury.io/rb/take_care.png)](http://badge.fury.io/rb/take_care)
+
 Sidekiq wrapper for activerecord model (or any class which instances are fetched by #id)
 
 Method #take_care(method, *args) that delegates actual performing of own method to sidekiq
