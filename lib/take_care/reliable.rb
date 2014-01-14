@@ -1,19 +1,17 @@
+require "take_care/reliable/respond_to"
+
 module TakeCare
   module Reliable
     extend ActiveSupport::Concern
+    include TakeCare::Reliable::RespondTo
 
     def take_care(method_name, *args)
       TakeCare::Worker.perform_async(self.class.to_s, self.id, method_name, *args)
     end
     alias_method :take_care_of, :take_care
 
-    def respond_to?(method_name, include_private = false)
-      return include_private if self.class.private_method_defined?(method_name)
-      /\Atake_care_(?:of_)?(.+)\Z/ =~ method_name && self.respond_to?($1) || super
-    end
-
     def method_missing(method_name, *args, &block)
-      if self.class.private_method_defined?(method_name)
+      if self.private_methods.include?(method_name)
         raise NoMethodError, "private method `#{method_name}' called for #{self}"
       end
       return super unless /\Atake_care_(?:of_)?(.+)\Z/ =~ method_name && self.respond_to?($1)
@@ -24,18 +22,15 @@ module TakeCare
     end
 
     module ClassMethods
+      include TakeCare::Reliable::RespondTo
+
       def take_care(method_name, *args)
         TakeCare::WorkerC.perform_async(self.to_s, method_name, *args)
       end
       alias_method :take_care_of, :take_care
 
-      def respond_to?(method_name, include_private = false)
-        return include_private if self.class.private_method_defined?(method_name)
-        /\Atake_care_(?:of_)?(.+)\Z/ =~ method_name && self.respond_to?($1) || super
-      end
-
       def method_missing(method_name, *args, &block)
-        if self.class.private_method_defined?(method_name)
+        if self.private_methods.include?(method_name)
           raise NoMethodError, "private method `#{method_name}' called for #{self}"
         end
         return super unless /\Atake_care_(?:of_)?(.+)\Z/ =~ method_name && self.respond_to?($1)

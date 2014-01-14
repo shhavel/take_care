@@ -11,12 +11,18 @@ module HumanMacros
         def hard_work(box1, box2)
         end
 
+        def hard_work_in_guts(box1, box2)
+        end
+
         private
         def take_care_hard_work_in_guts(box1, box2)
         end
 
         class << self
           def do_stuff(garbage1, garbage2)
+          end
+
+          def do_stuff_in_guts(garbage1, garbage2)
           end
 
           private
