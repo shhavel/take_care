@@ -1,6 +1,7 @@
 # TakeCare
 
 [![Gem Version](https://badge.fury.io/rb/take_care.png)](http://badge.fury.io/rb/take_care)
+[![Build Status](https://travis-ci.org/shhavel/take_care.png?branch=master)](https://travis-ci.org/shhavel/take_care)
 [![Dependency Status](https://gemnasium.com/shhavel/take_care.png)](https://gemnasium.com/shhavel/take_care)
 [![Code Climate](https://codeclimate.com/github/shhavel/take_care.png)](https://codeclimate.com/github/shhavel/take_care)
 
