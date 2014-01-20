@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/shhavel/take_care.png?branch=master)](https://travis-ci.org/shhavel/take_care)
 [![Dependency Status](https://gemnasium.com/shhavel/take_care.png)](https://gemnasium.com/shhavel/take_care)
 [![Code Climate](https://codeclimate.com/github/shhavel/take_care.png)](https://codeclimate.com/github/shhavel/take_care)
+[![Coverage Status](https://coveralls.io/repos/shhavel/take_care/badge.png)](https://coveralls.io/r/shhavel/take_care)
 
 Sidekiq wrapper for activerecord model (or any class which instances are fetched by #id)
 
