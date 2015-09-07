@@ -7,14 +7,14 @@ describe TakeCare::Reliable do
 
     describe "#take_care" do
       it "delegates method calls to Worker" do
-        TakeCare::Worker.should_receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2)
+        expect(TakeCare::Worker).to receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2)
         subject.take_care :hard_work, :box1, :box2
       end
     end
 
     describe "#take_care_of (alias of #take_care)" do
       it "delegates method calls to Worker" do
-        TakeCare::Worker.should_receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2)
+        expect(TakeCare::Worker).to receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2)
         subject.take_care_of :hard_work, :box1, :box2
       end
     end
@@ -22,18 +22,18 @@ describe TakeCare::Reliable do
     context 'Dynamic methods "take_care_..."' do
       describe "#method_missing" do
         it "delegates method calls to Worker" do
-          TakeCare::Worker.should_receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2)
+          expect(TakeCare::Worker).to receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2)
           subject.take_care_hard_work :box1, :box2
         end
 
         it "defines dynamic method after first call (method missing should not be called after that)" do
-          TakeCare::Worker.stub(:perform_async)
+          allow(TakeCare::Worker).to receive(:perform_async)
           subject.take_care_hard_work :box1, :box2
-          Human.instance_methods(false).should be_include :take_care_hard_work
+          expect(Human.instance_methods(false)).to be_include :take_care_hard_work
         end
 
         it "second time acts same as first (dynamically defined method)" do
-          TakeCare::Worker.should_receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2).twice
+          expect(TakeCare::Worker).to receive(:perform_async).with("Human", 4, :hard_work, :box1, :box2).twice
           subject.take_care_hard_work :box1, :box2
           subject.take_care_hard_work :box1, :box2
         end
@@ -44,15 +44,15 @@ describe TakeCare::Reliable do
       end
 
       describe "#respond_to?" do
-        it { should be_respond_to :take_care_hard_work }
-        it { should be_respond_to :take_care_of_hard_work }
+        it { is_expected.to be_respond_to :take_care_hard_work }
+        it { is_expected.to be_respond_to :take_care_of_hard_work }
 
         it "is false if exists private method with such name" do
-          should_not be_respond_to :take_care_hard_work_in_guts
+          is_expected.not_to be_respond_to :take_care_hard_work_in_guts
         end
 
         it "is true if exists private method with such name and we are checking for private methods as well" do
-          should be_respond_to(:take_care_hard_work_in_guts, true)
+          is_expected.to be_respond_to(:take_care_hard_work_in_guts, true)
         end
       end
     end
@@ -63,14 +63,14 @@ describe TakeCare::Reliable do
 
     describe "#take_care" do
       it "delegates class method calls to WorkerC" do
-        TakeCare::WorkerC.should_receive(:perform_async).with("Human", :do_stuff, :s1, :s2)
+        expect(TakeCare::WorkerC).to receive(:perform_async).with("Human", :do_stuff, :s1, :s2)
         subject.take_care :do_stuff, :s1, :s2
       end
     end
 
     describe "#take_care_of (alias of #take_care)" do
       it "delegates class method calls to WorkerC" do
-        TakeCare::WorkerC.should_receive(:perform_async).with("Human", :do_stuff, :s1, :s2)
+        expect(TakeCare::WorkerC).to receive(:perform_async).with("Human", :do_stuff, :s1, :s2)
         subject.take_care_of :do_stuff, :s1, :s2
       end
     end
@@ -78,18 +78,18 @@ describe TakeCare::Reliable do
     context 'Dynamic methods "take_care_..."' do
       describe "#method_missing" do
         it "delegates method calls to WorkerC" do
-          TakeCare::WorkerC.should_receive(:perform_async).with("Human", :do_stuff, :s1, :s2)
+          expect(TakeCare::WorkerC).to receive(:perform_async).with("Human", :do_stuff, :s1, :s2)
           subject.take_care_do_stuff :s1, :s2
         end
 
         it "defines dynamic method after first call (method missing should not be called after that)" do
-          TakeCare::WorkerC.stub(:perform_async)
+          allow(TakeCare::WorkerC).to receive(:perform_async)
           subject.take_care_do_stuff :s1, :s2
-          subject.methods(false).should be_include :take_care_do_stuff
+          expect(subject.methods(false)).to be_include :take_care_do_stuff
         end
 
         it "second time acts same as first (dynamically defined method)" do
-          TakeCare::WorkerC.should_receive(:perform_async).with("Human", :do_stuff, :s1, :s2).twice
+          expect(TakeCare::WorkerC).to receive(:perform_async).with("Human", :do_stuff, :s1, :s2).twice
           subject.take_care_do_stuff :s1, :s2
           subject.take_care_do_stuff :s1, :s2
         end
@@ -100,15 +100,15 @@ describe TakeCare::Reliable do
       end
 
       describe "#respond_to?" do
-        it { should be_respond_to :take_care_do_stuff }
-        it { should be_respond_to :take_care_of_do_stuff }
+        it { is_expected.to be_respond_to :take_care_do_stuff }
+        it { is_expected.to be_respond_to :take_care_of_do_stuff }
 
         it "is false if exists private method with such name" do
-          should_not be_respond_to :take_care_do_stuff_in_guts
+          is_expected.not_to be_respond_to :take_care_do_stuff_in_guts
         end
 
         it "is true if exists private method with such name and we are checking for private methods as well" do
-          should be_respond_to :take_care_do_stuff_in_guts, true
+          is_expected.to be_respond_to :take_care_do_stuff_in_guts, true
         end
       end
     end

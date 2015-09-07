@@ -5,13 +5,13 @@ describe TakeCare::Worker do
 
   describe '#perform' do
     it "should include Sidekiq::Worker" do
-      described_class.ancestors.should include Sidekiq::Worker
+      expect(described_class.ancestors).to include Sidekiq::Worker
     end
 
     it "finds class instance by id and calls method with received args" do
       duty = double("Human instance")
-      Human.should_receive(:find).with(4).and_return(duty)
-      duty.should_receive(:hard_work).with(:box1, :box2)
+      expect(Human).to receive(:find).with(4).and_return(duty)
+      expect(duty).to receive(:hard_work).with(:box1, :box2)
       subject.perform("Human", 4, :hard_work, :box1, :box2)
     end
   end
